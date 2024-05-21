@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compilador Léxico | Up</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<script>
+    function clearResults() {
+        document.querySelector('textarea[name="code"]').value = "";
+        const tbodies = document.querySelectorAll("table tbody");
+        tbodies.forEach(tbody => {
+            while (tbody.firstChild) {
+                tbody.removeChild(tbody.firstChild);
+            }
+        });
+    }
+</script>
+
+<body>
+    <h1>Analizar Léxico</h1>
+    <form action="/analyze" method="POST">
+        <label for="code">Ingresa el Código:</label><br>
+        <textarea name="code" id="code" rows="10" cols="50" required>{{ code if code else '' }}</textarea>
+        <br><br>
+        <button class="button" type="submit" value="Analizar"> Analizar </button>
+    </form>
+    <button class="button" type="button" onclick="clearResults()">Limpiar Resultados</button>
+    {% if results %}
+    <h2>Resultados Léxicos</h2>
+    <div class="table-container">
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Token</th>
+                    <th>PR</th>
+                    <th>ID</th>
+                    <th>CAD</th>
+                    <th>NUM</th>
+                    <th>SIMB</th>
+                    <th>TIPO</th>
+                    <th>React</th>
+                    <th>JavaScript</th>
+                    <th>SQL</th>
+                    <th>ERROR</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for token in results %}
+                <tr>
+                    <td>{{ token.value }}</td>
+                    <td>{{ token.PR }}</td>
+                    <td>{{ token.ID }}</td>
+                    <td>{{ token.CAD }}</td>
+                    <td>{{ token.NUM }}</td>
+                    <td>{{ token.SIMB }}</td>
+                    <td>{{ token.TIPO }}</td>
+                    <td>{{ token.react }}</td>
+                    <td>{{ token.javascript }}</td>
+                    <td>{{ token.sql }}</td>
+                    <td>{{ token.ERROR }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tr>
+                <td>TOTAL</td>
+                <td>{{ results.PR }}</td>
+                <td></td>
+                <td>{{ results.CAD }}</td>
+                <td>{{ results.NUM }}</td>
+                <td>{{ results.SIMB }}</td>
+                <td></td>
+                <td>{{ results.react }}</td>
+                <td>{{ results.javascript }}</td>
+                <td>{{ results.sql }}</td>
+                <td>{{ results.ERROR }}</td>
+            </tr>
+        </table>
+    </div>
+    {% endif %}
+</body>
+
+</html>
